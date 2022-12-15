@@ -91,7 +91,10 @@ void add_widget_with_label(GtkContainer *box, gchar *caption, GtkWidget *widget)
 
 int main(int argc, char *argv[]) {
     GtkWidget *window = nullptr;
+    GtkWidget *calc = nullptr;
     GtkWidget *numeric = nullptr;
+    GtkWidget *base_operations = nullptr;
+    GtkWidget *math_functions = nullptr;
     GtkWidget *num1 = nullptr;
     GtkWidget *num2 = nullptr;
     GtkWidget *num3 = nullptr;
@@ -105,6 +108,15 @@ int main(int argc, char *argv[]) {
     GtkWidget *digit7 = nullptr;
     GtkWidget *digit8 = nullptr;
     GtkWidget *digit9 = nullptr;
+    GtkWidget *base_operations1 = nullptr;
+    GtkWidget *base_operations2 = nullptr;
+    GtkWidget *base_operations3 = nullptr;
+    GtkWidget *plus = nullptr;
+    GtkWidget *minus = nullptr;
+    GtkWidget *mul = nullptr;
+    GtkWidget *div = nullptr;
+    GtkWidget *power = nullptr;
+    GtkWidget *mod = nullptr;
 
     gtk_init(&argc, &argv);
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -143,14 +155,50 @@ int main(int argc, char *argv[]) {
 
     numeric = gtk_fixed_new();
 
-
     gtk_container_add(GTK_CONTAINER(numeric), num1);
     gtk_container_add(GTK_CONTAINER(numeric), num2);
     gtk_container_add(GTK_CONTAINER(numeric), num3);
     gtk_fixed_move(GTK_FIXED(numeric), num1, 0, 120);
     gtk_fixed_move(GTK_FIXED(numeric), num2, 0, 80);
     gtk_fixed_move(GTK_FIXED(numeric), num3, 0, 40);
-    gtk_container_add(GTK_CONTAINER(window), numeric);
+
+
+    plus = gtk_button_new_with_label("+");
+    minus = gtk_button_new_with_label("-");
+    mul = gtk_button_new_with_label("*");
+    div = gtk_button_new_with_label("/");
+    power = gtk_button_new_with_label("^");
+    mod = gtk_button_new_with_label("%");
+
+    base_operations1 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 2);
+    base_operations2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 2);
+    base_operations3 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 2);
+
+    add_widget_with_label(GTK_CONTAINER(base_operations1), "", plus);
+    add_widget_with_label(GTK_CONTAINER(base_operations1), "", minus);
+    add_widget_with_label(GTK_CONTAINER(base_operations2), "", mul);
+    add_widget_with_label(GTK_CONTAINER(base_operations2), "", div);
+    add_widget_with_label(GTK_CONTAINER(base_operations3), "", power);
+    add_widget_with_label(GTK_CONTAINER(base_operations3), "", mod);
+
+    base_operations = gtk_fixed_new();
+
+    gtk_container_add(GTK_CONTAINER(base_operations), base_operations1);
+    gtk_container_add(GTK_CONTAINER(base_operations), base_operations2);
+    gtk_container_add(GTK_CONTAINER(base_operations), base_operations3);
+    gtk_fixed_move(GTK_FIXED(base_operations), base_operations1, 0, 0);
+    gtk_fixed_move(GTK_FIXED(base_operations), base_operations2, 55, 0);
+    gtk_fixed_move(GTK_FIXED(base_operations), base_operations3, 110, 0);
+
+
+
+    calc = gtk_fixed_new();
+
+    gtk_container_add(GTK_CONTAINER(calc), numeric);
+    gtk_container_add(GTK_CONTAINER(calc), base_operations);
+    gtk_fixed_move(GTK_FIXED(calc), base_operations, 250, 84);
+
+    gtk_container_add(GTK_CONTAINER(window), calc);
     
 
     gtk_widget_show_all(window);
