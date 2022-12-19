@@ -124,6 +124,8 @@ int check(char c) {
     result = 2;
   if (c == '/')
     result = 2;
+  if (c == '%')
+    result = 3;
   if (c == '^')
     result = 3;
   if (c == '~')
@@ -139,6 +141,14 @@ int check(char c) {
   if (c == 'g')
     result = 5;
   if (c == 'h')
+    result = 5;
+  if (c == 'j')
+    result = 5;
+  if (c == 'k')
+    result = 5;
+  if (c == 'l')
+    result = 5;
+  if (c == 'z')
     result = 5;
   return result;
 }

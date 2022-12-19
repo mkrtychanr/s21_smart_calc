@@ -1,6 +1,7 @@
 #ifndef SRC_HEADERS_PARSE_H_
 #define SRC_HEADERS_PARSE_H_
 
+int find_eq(char *ptr);
 int is_br_open(const char *ptr);
 int is_br_close(const char *ptr);
 int is_plus(const char *ptr);
@@ -8,12 +9,17 @@ int is_minus(const char *ptr);
 int is_multiply(const char *ptr);
 int is_divide(const char *ptr);
 int is_pow(const char *ptr);
+int is_mod(const char *ptr);
 int is_sin(char *ptr);
+int is_asin(char *ptr);
 int is_cos(char *ptr);
+int is_acos(char *ptr);
 int is_tan(char *ptr);
+int is_atan(char *ptr);
 int is_ctg(char *ptr);
 int is_sqrt(char *ptr);
 int is_ln(char *ptr);
+int is_log(char *ptr);
 int is_digit(const char *ptr);
 int is_valid_for_digit(char *ptr);
 void to_file(char *s);
