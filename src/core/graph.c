@@ -7,12 +7,8 @@
 #include <stdlib.h>
 
 int main(int argc, char* argv[]) {
-  if (argc == 2) {
-    if (find_eq(argv[1]) != -1) {
-      //
-    }
-    to_file(argv[1]);
-    to_polish();
-  }
+  argc = argc + 1 - 1;
+  to_file(argv[1]);
+  to_polish();
   return 0;
 }
