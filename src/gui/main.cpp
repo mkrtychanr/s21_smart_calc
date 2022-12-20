@@ -6,7 +6,7 @@ int main(int argc, char *argv[]) {
    Calculator calculator;
    calculator.setWindowTitle("Calculator");
    calculator.resize(230,200);
-   calculator.setFixedSize(1800,250);
+   calculator.setFixedSize(700,250);
    calculator.show();
    return app.exec();
 }
