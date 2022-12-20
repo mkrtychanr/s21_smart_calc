@@ -54,3 +54,4 @@ dkms.conf
 *graph
 *.vscode
 *.DS_Store
+*build
