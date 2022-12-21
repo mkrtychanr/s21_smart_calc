@@ -168,7 +168,7 @@ void addOpenBracket(std::vector<Moment>& moments) {
 }
 
 void addDigit(std::vector<Moment>& moments, int caseValueForNumber) {
-    moments.push_back(Moment(moments.back().bracketCounter, 1, caseValueForNumber));
+    moments.push_back(Moment(moments.back().bracketCounter, caseValueForNumber, 1));
 }
 
 void addCloseBracket(std::vector<Moment>& moments) {
@@ -184,7 +184,7 @@ void addUnary(std::vector<Moment>& moments, int sizeOfUnary) {
 }
 
 void addDot(std::vector<Moment>& moments) {
-    moments.push_back(Moment(moments.back().bracketCounter, 2, 1));
+    moments.push_back(Moment(moments.back().bracketCounter, 2, 2));
 }
 
 void addBinary(std::vector<Moment>& moments) {
