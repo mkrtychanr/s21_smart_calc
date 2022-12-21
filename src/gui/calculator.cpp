@@ -329,7 +329,7 @@ void Calculator::slotButtonClicked() {
         }
         displaystring->setText(QString(str.c_str()) + "|");
     } else {
-        if (str.size() != 0) {
+        if (str.size() != 0 && moments.back().bracketCounter == 0 && moments.back().status != 5 && str.back() != '.') {
             toFile(str);
             auto a = calculate(is_func(str));
             str = std::to_string(a);
