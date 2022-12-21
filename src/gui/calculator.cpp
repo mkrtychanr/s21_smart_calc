@@ -313,6 +313,12 @@ void Calculator::slotButtonClicked() {
         displaystring->setText("|");
         moments.clear();
         moments.push_back(Moment(0, 0, 0));
+    } else if (handeledString == "<-") {
+        if (moments.back().characters != 0) {
+            str.resize(str.length() - moments.back().characters);
+            moments.pop_back();
+            displaystring->setText(QString(str.c_str()) + "|");
+        }
     } else if (handeledString != "=") {
         std::string additional = "";
         bool status = true;
