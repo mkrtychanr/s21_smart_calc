@@ -6,9 +6,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main(int argc, char* argv[]) {
-  argc = argc + 1 - 1;
-  to_file(argv[1]);
+int main() {
+  FILE *expression_file = fopen(".expression", "r");
+  char expression[1024];
+  fgets(expression, 1024, expression_file);
+  to_file(expression);
   to_polish();
   return 0;
 }

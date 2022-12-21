@@ -41,6 +41,7 @@ void to_polish() {
   free(temp);
   fclose(input);
   fclose(output);
+  system("rm -rf 1.txt");
 }
 
 // double calc(double x) {
