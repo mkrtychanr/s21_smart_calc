@@ -5,43 +5,36 @@
 #include <cstdlib>
 #include <cstdio>
 
-// bracketSCounter = 0
-// разрешены цифры, запрещена точка, переменная и унарные функции разрешены status 0
-// нажата точка, разрешены только цифры status 1
-// после точки, разрешены цифры, закрытая скобка по возможности, бинарные фукнции status 2
-// после закрытой скобки, разрешены только бинарные функции status 3
-// после бинарного знака, разрешены цифры и унарные знаки, минус запрещен
-
 Calculator::Calculator (QWidget *parent) : QWidget(parent) {
- displaystring = new QLabel("|");
- displaystring->setMinimumSize (150, 50);
- QString aButtons[5][6] = {
-  {"^", "%", "x", "(",   ")",   "sqrt"},
-  {"7", "8", "9", "/", "sin", "asin"},
-  {"4", "5", "6", "*", "cos", "acos"},
-  {"1", "2", "3", "-", "tan", "atan"},
-  {"0", ".", "=", "+", "ln",  "log"}
- };
+    displaystring = new QLabel("|");
+    displaystring->setMinimumSize (150, 50);
+    QString aButtons[5][6] = {
+        {"^", "%", "x", "(",   ")",   "sqrt"},
+        {"7", "8", "9", "/", "sin", "asin"},
+        {"4", "5", "6", "*", "cos", "acos"},
+        {"1", "2", "3", "-", "tan", "atan"},
+        {"0", ".", "=", "+", "ln",  "log"}
+    };
 
- QGridLayout *myLayout = new QGridLayout;
- myLayout->addWidget(displaystring, 0, 0, 1, 6);
- for (int i = 0; i < 5; ++i) {
-  for (int j = 0; j < 6; ++j) {
-   myLayout->addWidget(createButton(aButtons[i][j]), i + 1, j);
-  }
- }
- myLayout->addWidget(createButton("<-", 40, 40), 1, 7);
- myLayout->addWidget(createButton("CE", 40, 152), 2, 7);
- setLayout(myLayout);
- str = "";
- moments.push_back(Moment(0, 0, 0));
+    QGridLayout *myLayout = new QGridLayout;
+    myLayout->addWidget(displaystring, 0, 0, 1, 6);
+    for (int i = 0; i < 5; ++i) {
+        for (int j = 0; j < 6; ++j) {
+            myLayout->addWidget(createButton(aButtons[i][j]), i + 1, j);
+        }
+    }
+    myLayout->addWidget(createButton("<-", 40, 40), 1, 7);
+    myLayout->addWidget(createButton("CE", 40, 152), 2, 7);
+    setLayout(myLayout);
+    str = "";
+    moments.push_back(Moment(0, 0, 0));
 }
 
 QPushButton* Calculator::createButton (const QString& str, int i, int j) {
- QPushButton* pcmd = new QPushButton(str);
- pcmd->setMinimumSize(i, j);
- connect(pcmd, SIGNAL(clicked()), this, SLOT(slotButtonClicked()));
- return pcmd;
+    QPushButton* pcmd = new QPushButton(str);
+    pcmd->setMinimumSize(i, j);
+    connect(pcmd, SIGNAL(clicked()), this, SLOT(slotButtonClicked()));
+    return pcmd;
 }
 
 bool is_func(const std::string& str) {
@@ -200,28 +193,28 @@ void addBinary(std::vector<Moment>& moments) {
 
 void branch0(const std::string& handeledString, std::vector<Moment>& moments, bool& status, char lastCharacter, std::string& additional) {
     int caseValueForNumber = 1;
-        if (handeledString == "(") {
-            addOpenBracket(moments);
-        } else if ('0' <= handeledString[0] && handeledString[0] <= '9') {
-            addDigit(moments, caseValueForNumber);
-        } else if (handeledString == ")" && moments.back().bracketCounter > 0 && lastCharacter != '(') {
-            addCloseBracket(moments);
-        } else if (handeledString == "x") {
-            addX(moments);
+    if (handeledString == "(") {
+        addOpenBracket(moments);
+    } else if ('0' <= handeledString[0] && handeledString[0] <= '9') {
+        addDigit(moments, caseValueForNumber);
+    } else if (handeledString == ")" && moments.back().bracketCounter > 0 && lastCharacter != '(') {
+        addCloseBracket(moments);
+    } else if (handeledString == "x") {
+        addX(moments);
+    } else {
+        additional = "(";
+        if (handeledString == "-") {
+            addUnary(moments, 1);
+        } else if (handeledString == "ln") {
+            addUnary(moments, 2);
+        } else if (handeledString == "sin" || handeledString == "cos" || handeledString == "tan" || handeledString == "log") {
+            addUnary(moments, 3);
+        } else if (handeledString == "sqrt" || handeledString == "asin" || handeledString == "acos" || handeledString == "atan") {
+            addUnary(moments, 4);
         } else {
-            additional = "(";
-            if (handeledString == "-") {
-                addUnary(moments, 1);
-            } else if (handeledString == "ln") {
-                addUnary(moments, 2);
-            } else if (handeledString == "sin" || handeledString == "cos" || handeledString == "tan" || handeledString == "log") {
-                addUnary(moments, 3);
-            } else if (handeledString == "sqrt" || handeledString == "asin" || handeledString == "acos" || handeledString == "atan") {
-                addUnary(moments, 4);
-            } else {
-                status = false;
-            }
+            status = false;
         }
+    }
 }
 
 void branch1(const std::string& handeledString, std::vector<Moment>& moments, bool& status, char lastCharacter) {
@@ -274,26 +267,26 @@ void branch4(const std::string& handeledString, std::vector<Moment>& moments, bo
 
 void branch5(const std::string& handeledString, std::vector<Moment>& moments, bool& status, char lastCharacter, std::string& additional) {
     int caseValueForNumber = 1;
-            if (handeledString == "(") {
-                addOpenBracket(moments);
-            } else if (handeledString == ")" && moments.back().bracketCounter > 0 && lastCharacter != '(') {
-                addCloseBracket(moments);
-            } else if (handeledString == "x") {
-                addX(moments);
-            } else if ('0' <= handeledString[0] && handeledString[0] <= '9') {
-                addDigit(moments, caseValueForNumber);
-            } else {
-                additional = "(";
-                if (handeledString == "ln") {
-                    addUnary(moments, 2);
-                } else if (handeledString == "sin" || handeledString == "cos" || handeledString == "tan" || handeledString == "log") {
-                    addUnary(moments, 3);
-                } else if (handeledString == "sqrt" || handeledString == "asin" || handeledString == "acos" || handeledString == "atan") {
-                    addUnary(moments, 4);
-                } else {
-                    status = false;
-                }
-            }
+    if (handeledString == "(") {
+        addOpenBracket(moments);
+    } else if (handeledString == ")" && moments.back().bracketCounter > 0 && lastCharacter != '(') {
+        addCloseBracket(moments);
+    } else if (handeledString == "x") {
+        addX(moments);
+    } else if ('0' <= handeledString[0] && handeledString[0] <= '9') {
+        addDigit(moments, caseValueForNumber);
+    } else {
+        additional = "(";
+        if (handeledString == "ln") {
+            addUnary(moments, 2);
+        } else if (handeledString == "sin" || handeledString == "cos" || handeledString == "tan" || handeledString == "log") {
+            addUnary(moments, 3);
+        } else if (handeledString == "sqrt" || handeledString == "asin" || handeledString == "acos" || handeledString == "atan") {
+            addUnary(moments, 4);
+        } else {
+            status = false;
+        }
+    }
 }
 
 
@@ -346,10 +339,3 @@ void Calculator::slotButtonClicked() {
 // нажата переменная, разрешены бинарные функции, возможна закрытая скобка status 3
 // после закрытой скобки, разрешены только бинарные функции status 4
 // после бинарного знака, разрешены цифры и унарные знаки, минус запрещен status 5
-
-// {"^", "%", "x", "(",   ")",   "sqrt"},
-//   {"7", "8", "9", "/", "sin", "asin"},
-//   {"4", "5", "6", "*", "cos", "acos"},
-//   {"1", "2", "3", "-", "tan", "atan"},
-//   {"0", ".", "=", "+", "ln",  "log"}
-//
