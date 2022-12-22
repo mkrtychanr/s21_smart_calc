@@ -184,21 +184,19 @@ void addUnary(std::vector<Moment>& moments, int sizeOfUnary) {
 }
 
 void addDot(std::vector<Moment>& moments) {
-    moments.push_back(Moment(moments.back().bracketCounter, 2, 2));
+    moments.push_back(Moment(moments.back().bracketCounter, 2, 1));
 }
 
 void addBinary(std::vector<Moment>& moments) {
     moments.push_back(Moment(moments.back().bracketCounter, 5, 1));
 }
 
-void branch0(const std::string& handeledString, std::vector<Moment>& moments, bool& status, char lastCharacter, std::string& additional) {
+void branch0(const std::string& handeledString, std::vector<Moment>& moments, bool& status, std::string& additional) {
     int caseValueForNumber = 1;
     if (handeledString == "(") {
         addOpenBracket(moments);
     } else if ('0' <= handeledString[0] && handeledString[0] <= '9') {
         addDigit(moments, caseValueForNumber);
-    } else if (handeledString == ")" && moments.back().bracketCounter > 0 && lastCharacter != '(') {
-        addCloseBracket(moments);
     } else if (handeledString == "x") {
         addX(moments);
     } else {
@@ -292,7 +290,7 @@ void branch5(const std::string& handeledString, std::vector<Moment>& moments, bo
 
 void branching(int toCheck, bool &status, const std::string& handeledString, std::vector<Moment>& moments, char lastCharacter, std::string& additional) {
     if (toCheck == 0) {
-        branch0(handeledString, moments, status, lastCharacter, additional);
+        branch0(handeledString, moments, status, additional);
     } else if (toCheck == 1) {
         branch1(handeledString, moments, status, lastCharacter);
     } else if (toCheck == 2) {
@@ -306,18 +304,28 @@ void branching(int toCheck, bool &status, const std::string& handeledString, std
     }
 }
 
+void fillMomentsAfterCalcualte(const std::string& resultOfCalculation, std::vector<Moment>& moments) {
+    bool statusPlug = false;
+    std::string stringPlug = "";
+    for (auto i : resultOfCalculation) {
+        std::string handeledString;
+        handeledString.push_back(i);
+        branching(moments.back().status, statusPlug, handeledString, moments, 0, stringPlug);
+    }
+}
+
 void Calculator::slotButtonClicked() {
     std::string handeledString = ((QPushButton*)sender())->text().toStdString();
+    std::string stringToPrint = "";
     if (handeledString == "CE") {
         str = "";
-        displaystring->setText("|");
         moments.clear();
         moments.push_back(Moment(0, 0, 0));
     } else if (handeledString == "<-") {
         if (moments.back().characters != 0) {
             str.resize(str.length() - moments.back().characters);
             moments.pop_back();
-            displaystring->setText(QString(str.c_str()) + "|");
+            stringToPrint = str;
         }
     } else if (handeledString != "=") {
         std::string additional = "";
@@ -327,15 +335,30 @@ void Calculator::slotButtonClicked() {
             str += handeledString;
             str += additional;
         }
-        displaystring->setText(QString(str.c_str()) + "|");
+        stringToPrint = str;
     } else {
         if (str.size() != 0 && moments.back().bracketCounter == 0 && moments.back().status != 5 && str.back() != '.') {
             toFile(str);
-            auto a = calculate(is_func(str));
-            str = std::to_string(a);
-            displaystring->setText(str.c_str());
+            bool xStatus = is_func(str);
+            auto a = calculate(xStatus);
+            moments.clear();
+            moments.push_back(Moment(0, 0, 0));
+            if (!xStatus) {
+                str = std::to_string(a);
+                stringToPrint = str;
+                if (str != "nan" && str != "inf") {
+                    fillMomentsAfterCalcualte(str, moments);
+                } else {
+                    str = "";
+                }
+            } else {
+                str = "";
+                stringToPrint = str;
+            }
+            displaystring->setText(QString(str.c_str()) + "|");
         }
     }
+    displaystring->setText(QString(stringToPrint.c_str()) + "|");
 }
 
 // bracketSCounter = 0
