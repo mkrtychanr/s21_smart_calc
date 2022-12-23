@@ -7,6 +7,12 @@
  #include <QGridLayout>
 #include <string>
 #include "mainwindow.h"
+#include <stack>
+
+double stackWrap(std::stack<double>& number);
+double binary(const double rhs, const double lhs, const char op);
+double unary(const double number, const char op);
+bool isBinary(const char op);
 
 struct Moment {
     int bracketCounter = 0;
@@ -28,7 +34,6 @@ class Calculator : public QWidget {
         std::vector<Moment> moments;
         QVector<double> x;
         QVector<double> y;
-        void withX(const std::vector<std::string> &parts);
     public:
         Calculator (QWidget* pwgt = 0);
         QPushButton* createButton (const QString& str, int i = 40, int j = 40);

@@ -13,7 +13,8 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QVector<double> x_ = QVector<double>(), QVector<double> y_ = QVector<double>(), QWidget *parent = nullptr);
+    MainWindow(const std::vector<std::string>& parts, QWidget *parent = nullptr);
+    void on_pushButton_clicked();
     ~MainWindow();
 
 private:
