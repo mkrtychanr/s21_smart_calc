@@ -6,6 +6,7 @@
  #include <QPushButton>
  #include <QGridLayout>
 #include <string>
+#include "mainwindow.h"
 
 struct Moment {
     int bracketCounter = 0;
@@ -25,10 +26,15 @@ class Calculator : public QWidget {
         QStack <QString> stack;
         std::string str;
         std::vector<Moment> moments;
+        QVector<double> x;
+        QVector<double> y;
+        void withX(const std::vector<std::string> &parts);
     public:
         Calculator (QWidget* pwgt = 0);
         QPushButton* createButton (const QString& str, int i = 40, int j = 40);
         double calculate (bool hasX);
+        QVector<MainWindow*> w;
+        ~Calculator();
     public slots:
         void slotButtonClicked();
 };

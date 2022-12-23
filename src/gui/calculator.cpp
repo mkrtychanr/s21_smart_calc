@@ -1,4 +1,5 @@
 #include "calculator.h"
+#include "mainwindow.h"
 #include <stack>
 #include <iostream>
 #include <fstream>
@@ -28,6 +29,12 @@ Calculator::Calculator (QWidget *parent) : QWidget(parent) {
     setLayout(myLayout);
     str = "";
     moments.push_back(Moment(0, 0, 0));
+}
+
+Calculator::~Calculator() {
+    for (auto& i : w) {
+        delete i;
+    }
 }
 
 QPushButton* Calculator::createButton (const QString& str, int i, int j) {
@@ -153,10 +160,34 @@ double withoutX(const std::vector<std::string>& parts) {
     return numbers.top();
 }
 
+void Calculator::withX(const std::vector<std::string>& parts) {
+    for (double p = -1000000; p < 1000000; p += 0.1 ) {
+        std::stack<double> numbers;
+        for (auto& part : parts) {
+            if ('0' <= part[0] && part[0] <= '9') {
+                numbers.push(QString(part.c_str()).toDouble());
+            } else if (part[0] == 'x') {
+                numbers.push(p);
+            } else {
+                if (isBinary(part[0])) {
+                    numbers.push(binary(stackWrap(numbers), stackWrap(numbers), part[0]));
+                } else {
+                    numbers.push(unary(stackWrap(numbers), part[0]));
+                }
+            }
+        }
+        x.push_back(p);
+        y.push_back(numbers.top());
+    }
+}
 
 double Calculator::calculate(bool hasX) {
     std::vector<std::string> parts = parseFromFile();
     if (hasX) {
+        withX(parts);
+        MainWindow *window = new MainWindow(x, y);
+        w.push_back(window);
+        w.back()->show();
         return 0;
     } else {
         return withoutX(parts);
