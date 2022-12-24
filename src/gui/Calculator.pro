@@ -9,18 +9,20 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    calculator.cpp \
+    graphic.cpp \
     main.cpp \
-    mainwindow.cpp \
+    calculator.cpp \
     qcustomplot.cpp
 
 HEADERS += \
     calculator.h \
-    mainwindow.h \
+    graphic.h \
+    moment.h \
     qcustomplot.h
 
 FORMS += \
-    mainwindow.ui
+    calculator.ui \
+    graphic.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
