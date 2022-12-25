@@ -11,10 +11,12 @@ uninstall:
 core:
 	@cd src/ && make install && mv graph ../build/graph
 
-test:
-	@cd src/ && make test
+tests:
+	@cd src/ && make tests
 
 gcov_report:
+	rm -rf reports
+	mkdir reports
 	@cd src/ && make gcov_report
 	open reports/gcov_report.html
 

@@ -10,7 +10,7 @@ SRCS=$(wildcard core/s21_*.c)
 
 OBJS=$(SRCS:.c=.o)
 
-all: clean test
+all: clean tests
 
 install: $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) core/main.c -o graph
@@ -30,9 +30,9 @@ linter:
 	python3 ../cpplint.py --extensions=c *.c *.h tests/*.c tests/*.h
 
 # check - либа для работы тестов, $(LIB_NAME) - наша либа
-test: clean $(LIB_NAME).a
-	$(CC) $(FLAGS) core/check.c core/$(LIB_NAME).a $(TST_LIBS) -o core/test
-	./core/test
+tests: clean $(LIB_NAME).a
+	$(CC) $(FLAGS) core/check.c core/$(LIB_NAME).a $(TST_LIBS) -o core/tests
+	./core/tests
 
 main: $(LIB_NAME).a
 	$(CC) $(FLAGS) main.c $(LIB_NAME).a $(TST_LIBS) -o Main
@@ -40,8 +40,8 @@ main: $(LIB_NAME).a
 add_coverage_flag:
 	$(eval FLAGS += --coverage)
 
-gcov_report: add_coverage_flag test
-	./core/test
+gcov_report: add_coverage_flag tests
+	./core/tests
 	rm -rf check*.gcda check*.gcno
 	gcov -b -l -p -c s21_*.gcno
 	gcovr -o gcov_report.html --html --html-details
