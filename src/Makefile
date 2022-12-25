@@ -1,9 +1,50 @@
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra
+FLAGS = -Wall -Wextra -Werror -std=c11
+TST_LIBS = -lcheck
+ifeq ($(shell uname), Linux)
+	TST_LIBS += -lpthread -lrt -lsubunit -lm
+endif
+LIB_NAME = s21_polish
 
-all:
-	$(CC) $(CFLAGS) core/graph.c core/stack.c core/double_stack.c core/parse.c core/calculate.c -o graph
+SRCS=$(wildcard core/s21_*.c)
+
+OBJS=$(SRCS:.c=.o)
+
+all: clean test
+
+install: $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) core/main.c -o graph
+
 clean:
-	rm -rf ../build/graph ../build/*.txt
+	rm -rf *.o test *.a *.gcno *.gcda *.gcov *.html *.css
 
-rebuild: clean all
+%.o: %.c
+	$(CC) $(FLAGS) -c $< -o $@
+
+$(LIB_NAME).a: $(OBJS)
+	ar rc core/$(LIB_NAME).a $^
+	ranlib core/$(LIB_NAME).a
+	rm -rf core/*.o
+
+linter:
+	python3 ../cpplint.py --extensions=c *.c *.h tests/*.c tests/*.h
+
+# check - либа для работы тестов, $(LIB_NAME) - наша либа
+test: clean $(LIB_NAME).a
+	$(CC) $(FLAGS) core/check.c core/$(LIB_NAME).a $(TST_LIBS) -o core/test
+	./core/test
+
+main: $(LIB_NAME).a
+	$(CC) $(FLAGS) main.c $(LIB_NAME).a $(TST_LIBS) -o Main
+
+add_coverage_flag:
+	$(eval FLAGS += --coverage)
+
+gcov_report: add_coverage_flag test
+	./core/test
+	rm -rf check*.gcda check*.gcno
+	gcov -b -l -p -c s21_*.gcno
+	gcovr -o gcov_report.html --html --html-details
+	rm -rf core/*.gcno core/*.gcda core/*.o
+	mv *html ../reports/
+	mv *css ../reports/

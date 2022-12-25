@@ -1,4 +1,4 @@
-#include "headers/parse.h"
+#include "headers/s21_parse.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -124,16 +124,4 @@ int is_digit(const char *ptr) {
 }
 int is_valid_for_digit(char *ptr) {
   return is_digit(ptr) || (*ptr == 46 && is_digit(ptr + 1));
-}
-
-int find_eq(char *ptr) {
-  int len = strlen(ptr);
-  int result = -1;
-  for (int i = 0; i < len; i++) {
-    if (ptr[i] == '=') {
-      result = i;
-      break;
-    }
-  }
-  return result;
 }

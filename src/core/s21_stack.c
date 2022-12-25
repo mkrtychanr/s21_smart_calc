@@ -1,5 +1,6 @@
-#include "headers/stack.h"
+#include "headers/s21_stack.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 stack *init(char c) {
   stack *new_head = malloc(sizeof(stack));
@@ -22,13 +23,4 @@ stack *pop(stack *head) {
     free(head);
   }
   return new_head;
-}
-
-void destroy(stack *head) {
-  if (head != NULL) {
-    if (head->next != NULL) {
-      destroy(head->next);
-    }
-    free(head);
-  }
 }

@@ -1,10 +1,22 @@
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra
 
-all: delete_temp_build recreate_build_dir gui core
+all: uninstall install
+
+install: delete_temp_build recreate_build_dir gui core
+
+uninstall: 
+	@rm -rf build
 
 core:
-	@cd src/ && make && mv graph ../build/graph
+	@cd src/ && make install && mv graph ../build/graph
+
+test:
+	@cd src/ && make test
+
+gcov_report:
+	@cd src/ && make gcov_report
+	open reports/gcov_report.html
 
 gui:
 	@mkdir .temp_build
@@ -17,3 +29,6 @@ delete_temp_build:
 recreate_build_dir:
 	@rm -rf build
 	@mkdir build
+
+clean:
+	rm -rf reports/*

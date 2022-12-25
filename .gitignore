@@ -55,3 +55,6 @@ dkms.conf
 *.vscode
 *.DS_Store
 *build
+reports/
+*test
+*conf

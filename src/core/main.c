@@ -1,7 +1,5 @@
-#include "headers/double_stack.h"
-#include "headers/stack.h"
-#include "headers/parse.h"
-#include "headers/calculate.h"
+#include "headers/s21_parse.h"
+#include "headers/s21_calculate.h"
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>

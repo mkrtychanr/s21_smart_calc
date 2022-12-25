@@ -1,7 +1,6 @@
-#ifndef SRC_HEADERS_PARSE_H_
-#define SRC_HEADERS_PARSE_H_
+#ifndef SRC_HEADERS_S21_PARSE_H_
+#define SRC_HEADERS_S21_PARSE_H_
 
-int find_eq(char *ptr);
 int is_br_open(const char *ptr);
 int is_br_close(const char *ptr);
 int is_plus(const char *ptr);
@@ -24,4 +23,4 @@ int is_digit(const char *ptr);
 int is_valid_for_digit(char *ptr);
 void to_file(char *s);
 
-#endif  // SRC_HEADERS_PARSE_H_
+#endif  // SRC_HEADERS_S21_PARSE_H_
