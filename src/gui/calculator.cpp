@@ -395,7 +395,7 @@ void Calculator::on_equalsButton_clicked()
     if (str.size() != 0) {
         toFile();
         bool xStatus = is_func();
-        auto a = calculate(xStatus, g);
+        auto a = calculate(xStatus);
         moments.clear();
         moments.push_back(Moment(0, 0, 0));
         if (!xStatus) {
@@ -426,12 +426,11 @@ std::vector<std::string> parseFromFile() {
     return result;
 }
 
-double calculate(bool hasX, QVector<graphic*>& g) {
+double calculate(bool hasX) {
     std::vector<std::string> parts = parseFromFile();
     if (hasX) {
         auto temp = new graphic(parts);
-        g.push_back(temp);
-        g.back() -> show();
+        temp -> show();
         return 0;
     } else {
         return withoutX(parts);
