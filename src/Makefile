@@ -14,6 +14,7 @@ all: clean tests
 
 install: $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) core/main.c -o graph
+	rm -rf core/*.o
 
 clean:
 	rm -rf *.o test *.a *.gcno *.gcda *.gcov *.html *.css
